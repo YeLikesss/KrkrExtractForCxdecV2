@@ -5,10 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Detours">
       <UniqueIdentifier>{1a3862fc-2e9c-40b5-9852-dc494c9ce530}</UniqueIdentifier>
     </Filter>
@@ -37,5 +33,12 @@
     <ClInclude Include="..\Detours\detours.h">
       <Filter>Detours</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CxdecExtractorLoader.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="AmetoYuki_1.ico" />
   </ItemGroup>
 </Project>

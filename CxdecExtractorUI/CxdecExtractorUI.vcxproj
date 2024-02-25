@@ -95,7 +95,6 @@
       </SupportUnloadOfDelayLoadedDLL>
       <SupportNobindOfDelayLoadedDLL>true</SupportNobindOfDelayLoadedDLL>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <AdditionalOptions>/FILEALIGN:0x1000 %(AdditionalOptions)</AdditionalOptions>
       <LargeAddressAware>false</LargeAddressAware>
       <WindowsMetadataLinkDelaySign>false</WindowsMetadataLinkDelaySign>
       <CETCompat>false</CETCompat>
@@ -148,7 +147,6 @@
       </SupportUnloadOfDelayLoadedDLL>
       <SupportNobindOfDelayLoadedDLL>true</SupportNobindOfDelayLoadedDLL>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <AdditionalOptions>/FILEALIGN:0x1000 %(AdditionalOptions)</AdditionalOptions>
       <WindowsMetadataLinkDelaySign>false</WindowsMetadataLinkDelaySign>
       <LargeAddressAware>false</LargeAddressAware>
       <CETCompat>false</CETCompat>

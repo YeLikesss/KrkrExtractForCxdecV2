@@ -80,6 +80,8 @@
       <ControlFlowGuard>false</ControlFlowGuard>
       <CreateHotpatchableImage>false</CreateHotpatchableImage>
       <BuildStlModules>false</BuildStlModules>
+      <EnableParallelCodeGeneration>false</EnableParallelCodeGeneration>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -93,7 +95,11 @@
       <SupportNobindOfDelayLoadedDLL>true</SupportNobindOfDelayLoadedDLL>
       <CETCompat>false</CETCompat>
       <EnableUAC>false</EnableUAC>
+      <LargeAddressAware>false</LargeAddressAware>
     </Link>
+    <Manifest>
+      <VerboseOutput>false</VerboseOutput>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -135,7 +141,6 @@
       <DataExecutionPrevention>false</DataExecutionPrevention>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
-      <AdditionalOptions>/FILEALIGN:0x1000 /MERGE:".detourd=.data" /MERGE:".detourc=.rdata" %(AdditionalOptions)</AdditionalOptions>
       <SupportUnloadOfDelayLoadedDLL>
       </SupportUnloadOfDelayLoadedDLL>
       <WindowsMetadataLinkDelaySign>false</WindowsMetadataLinkDelaySign>
@@ -158,6 +163,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Detours\detours.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CxdecExtractorLoader.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="AmetoYuki_1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

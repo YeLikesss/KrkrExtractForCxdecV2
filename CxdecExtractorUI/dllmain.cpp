@@ -10,7 +10,7 @@
 constexpr size_t MaxPath = 1024u;
 
 typedef void (WINAPI* tExtractFunc)(const wchar_t* packageName);
-static tExtractFunc g_ExtractPackage = NULL;
+static tExtractFunc g_ExtractPackage = nullptr;
 
 /// <summary>
 /// 主窗体消息循环
@@ -104,7 +104,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
             }
             else
             {
-                MessageBoxW(nullptr, L"CxdecExtractor.dll加载失败", L"Error", MB_OK);
+                MessageBoxW(nullptr, L"CxdecExtractor.dll加载失败", L"错误", MB_OK);
             }
             break;
         }

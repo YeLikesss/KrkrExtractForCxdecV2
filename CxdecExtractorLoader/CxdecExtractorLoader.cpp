@@ -1,7 +1,10 @@
 ﻿#include <windows.h>
 #include <detours.h>
 #include <Shlwapi.h>
-#pragma comment(lib,"shlwapi.lib")
+#pragma comment(lib, "shlwapi.lib")
+
+#pragma comment(linker, "/MERGE:\".detourd=.data\"")
+#pragma comment(linker, "/MERGE:\".detourc=.rdata\"")
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nShowCmd)
 {
@@ -46,12 +49,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			}
 			else
 			{
-				MessageBoxW(nullptr, L"创建进程错误", L"Error", MB_OK);
+				MessageBoxW(nullptr, L"创建进程错误", L"错误", MB_OK);
 			}
 		}
 		else
 		{
-			MessageBoxW(nullptr, L"请拖拽游戏主程序到Loader", L"Error", MB_OK);
+			MessageBoxW(nullptr, L"请拖拽游戏主程序到启动器", L"错误", MB_OK);
 		}
 	}
 	LocalFree(argv);

@@ -46,12 +46,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <ManagedAssembly>false</ManagedAssembly>
+    <EmbedManifest>false</EmbedManifest>
+    <LinkDelaySign>false</LinkDelaySign>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <GenerateManifest>false</GenerateManifest>
     <EmbedManifest>false</EmbedManifest>
     <LinkDelaySign>false</LinkDelaySign>
+    <ManagedAssembly>false</ManagedAssembly>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -63,10 +67,10 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <ExceptionHandling>false</ExceptionHandling>
+      <ExceptionHandling>Sync</ExceptionHandling>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)Common;$(SolutionDir)KrkrPlugin;$(SolutionDir)Detours;$(SolutionDir)Zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Common;$(SolutionDir)KrkrPlugin;$(SolutionDir)Detours;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GuardEHContMetadata>false</GuardEHContMetadata>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <EnableModules>false</EnableModules>
@@ -74,8 +78,10 @@
       <CreateHotpatchableImage>false</CreateHotpatchableImage>
       <OpenMPSupport>false</OpenMPSupport>
       <BrowseInformation />
-      <CompileAsWinRT>
-      </CompileAsWinRT>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <ControlFlowGuard>false</ControlFlowGuard>
+      <EnableParallelCodeGeneration>false</EnableParallelCodeGeneration>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -86,8 +92,10 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>false</DataExecutionPrevention>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <AdditionalOptions>/FILEALIGN:0x1000 %(AdditionalOptions)</AdditionalOptions>
       <ModuleDefinitionFile>export.def</ModuleDefinitionFile>
+      <CETCompat>false</CETCompat>
+      <SupportNobindOfDelayLoadedDLL>true</SupportNobindOfDelayLoadedDLL>
+      <WindowsMetadataLinkDelaySign>false</WindowsMetadataLinkDelaySign>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -102,9 +110,9 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <ExceptionHandling>false</ExceptionHandling>
+      <ExceptionHandling>Sync</ExceptionHandling>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>$(SolutionDir)Common;$(SolutionDir)KrkrPlugin;$(SolutionDir)Detours;$(SolutionDir)Zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Common;$(SolutionDir)KrkrPlugin;$(SolutionDir)Detours;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <RemoveUnreferencedCodeData>false</RemoveUnreferencedCodeData>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
@@ -118,6 +126,9 @@
       <CreateHotpatchableImage>false</CreateHotpatchableImage>
       <OpenMPSupport>false</OpenMPSupport>
       <EnableParallelCodeGeneration>false</EnableParallelCodeGeneration>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <BuildStlModules>false</BuildStlModules>
+      <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -130,14 +141,13 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>false</DataExecutionPrevention>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <AdditionalOptions>/FILEALIGN:0x1000 /MERGE:".detourd=.data" /MERGE:".detourc=.rdata" %(AdditionalOptions)</AdditionalOptions>
       <MergeSections>
       </MergeSections>
       <ModuleDefinitionFile>export.def</ModuleDefinitionFile>
       <LargeAddressAware>false</LargeAddressAware>
-      <CETCompat>
-      </CETCompat>
+      <CETCompat>false</CETCompat>
       <WindowsMetadataLinkDelaySign>false</WindowsMetadataLinkDelaySign>
+      <SupportNobindOfDelayLoadedDLL>true</SupportNobindOfDelayLoadedDLL>
     </Link>
     <Manifest>
       <VerboseOutput>false</VerboseOutput>
@@ -158,22 +168,9 @@
     <ClCompile Include="..\Detours\image.cpp" />
     <ClCompile Include="..\Detours\modules.cpp" />
     <ClCompile Include="..\KrkrPlugin\tp_stub.cpp" />
-    <ClCompile Include="..\Zlib\adler32.c" />
-    <ClCompile Include="..\Zlib\compress.c" />
-    <ClCompile Include="..\Zlib\crc32.c" />
-    <ClCompile Include="..\Zlib\deflate.c" />
-    <ClCompile Include="..\Zlib\gzclose.c" />
-    <ClCompile Include="..\Zlib\gzlib.c" />
-    <ClCompile Include="..\Zlib\gzread.c" />
-    <ClCompile Include="..\Zlib\gzwrite.c" />
-    <ClCompile Include="..\Zlib\infback.c" />
-    <ClCompile Include="..\Zlib\inffast.c" />
-    <ClCompile Include="..\Zlib\inflate.c" />
-    <ClCompile Include="..\Zlib\inftrees.c" />
-    <ClCompile Include="..\Zlib\trees.c" />
-    <ClCompile Include="..\Zlib\uncompr.c" />
-    <ClCompile Include="..\Zlib\zutil.c" />
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="ExtractCore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\Base.h" />
@@ -186,19 +183,9 @@
     <ClInclude Include="..\Common\util.h" />
     <ClInclude Include="..\Detours\detours.h" />
     <ClInclude Include="..\KrkrPlugin\tp_stub.h" />
-    <ClInclude Include="..\Zlib\crc32.h" />
-    <ClInclude Include="..\Zlib\deflate.h" />
-    <ClInclude Include="..\Zlib\gzguts.h" />
-    <ClInclude Include="..\Zlib\inffast.h" />
-    <ClInclude Include="..\Zlib\inffixed.h" />
-    <ClInclude Include="..\Zlib\inflate.h" />
-    <ClInclude Include="..\Zlib\inftrees.h" />
-    <ClInclude Include="..\Zlib\trees.h" />
-    <ClInclude Include="..\Zlib\zconf.h" />
-    <ClInclude Include="..\Zlib\zlib.h" />
-    <ClInclude Include="..\Zlib\zutil.h" />
-    <ClInclude Include="CxdecFileEntry.h" />
-    <ClInclude Include="IStreamExtend.h" />
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="ExtractCore.h" />
+    <ClInclude Include="ExtendUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="export.def" />
