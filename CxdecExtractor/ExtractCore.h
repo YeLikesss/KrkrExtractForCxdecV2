@@ -46,7 +46,7 @@ namespace Engine
         __declspec(noinline)
         unsigned __int32 GetEncryptMode() const
         {
-            return ((this->Ordinal & 0x0000FFFF00000000) >> 32);
+            return ((this->Ordinal & 0x0000FFFF00000000i64) >> 32);
         }
 
         /// <summary>
@@ -61,16 +61,16 @@ namespace Engine
 
             *(__int64*)fakeName = 0;      //清空8字节
 
-            unsigned __int32 ordinalLow32 = this->Ordinal & 0x00000000FFFFFFFF;
+            unsigned __int32 ordinalLow32 = this->Ordinal & 0x00000000FFFFFFFFi64;
 
             int charIndex = 0;
             do
             {
-                unsigned long temp = ordinalLow32;
-                temp &= 0x00003FFF;
-                temp += 0x00005000;
+                unsigned __int32 temp = ordinalLow32;
+                temp &= 0x00003FFFu;
+                temp += 0x00005000u;
 
-                fakeName[charIndex] = temp & 0x0000FFFF;
+                fakeName[charIndex] = temp & 0x0000FFFFu;
                 ++charIndex;
 
                 ordinalLow32 >>= 0x0E;

@@ -24,9 +24,9 @@
 
 &emsp;&emsp;4. 程序不会申请管理员权限弹出UAC提权, 游戏与工具务必不要放在C盘
 
-&emsp;&emsp;5. 提取后游戏资源落在`游戏目录\Extractor_Output`, 包含xxx文件夹的封包资源与xxx.alst的文件表
+&emsp;&emsp;5. 提取后游戏资源位于`游戏目录\Extractor_Output\`文件夹, 包含xxx文件夹的封包资源与xxx.alst的文件表
 
-&emsp;&emsp;6. 提取日志信息位于`工具目录\Extractor.log`下
+&emsp;&emsp;6. 提取日志信息为`工具目录\Extractor.log`文件
 
 &emsp;&emsp;7. 如出现错误标题的弹窗报错, 请检查上述步骤
 
