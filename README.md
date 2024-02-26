@@ -18,15 +18,15 @@
 ## 如何使用
 &emsp;&emsp;1. `CxdecExtractorLoader.exe`, `CxdecExtractor.dll`, `CxdecExtractorUI.dll`保持同一目录
 
-&emsp;&emsp;2. 下载微软[debugview](https://learn.microsoft.com/zh-cn/sysinternals/downloads/debugview)工具并运行, 解包进度会在此处打印日志输出
+&emsp;&emsp;2. 保证你的游戏是Wamsoft KrkrZ Hxv4加密类型且加密认证已移除
 
-&emsp;&emsp;3. 保证你的游戏是Wamsoft KrkrZ Hxv4加密类型且加密认证已移除
+&emsp;&emsp;3. 拖拽xxx.exe到`CxdecExtractorLoader.exe`启动, 弹出解包响应框, 拖拽xxx.xp3到响应框内解包
 
-&emsp;&emsp;4. 拖拽xxx.exe到`CxdecExtractorLoader.exe`启动, 弹出解包响应框, 拖拽xxx.xp3到响应框内解包
+&emsp;&emsp;4. 程序不会申请管理员权限弹出UAC提权, 游戏与工具务必不要放在C盘
 
-&emsp;&emsp;5. 程序不会申请管理员权限弹出UAC提权, 游戏与工具务必不要放在C盘
+&emsp;&emsp;5. 提取后游戏资源落在`游戏目录\Extractor_Output`, 包含xxx文件夹的封包资源与xxx.alst的文件表
 
-&emsp;&emsp;6. 提取后游戏资源落在`游戏目录\Archive_Output`, 包含xxx文件夹的封包资源与xxx.alst的文件表
+&emsp;&emsp;6. 提取日志信息位于`工具目录\Extractor.log`下
 
 &emsp;&emsp;7. 如出现错误标题的弹窗报错, 请检查上述步骤
 

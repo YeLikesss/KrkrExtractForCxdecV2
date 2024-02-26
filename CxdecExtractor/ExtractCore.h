@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <Windows.h>
 #include <string>
@@ -9,30 +9,30 @@
 namespace Engine
 {
     /// <summary>
-    /// ÎÄ¼ş±í
+    /// æ–‡ä»¶è¡¨
     /// </summary>
     class FileEntry
     {
     public:
         /// <summary>
-        /// ÎÄ¼ş¼ĞHash
+        /// æ–‡ä»¶å¤¹Hash
         /// </summary>
         unsigned __int8 DirectoryPathHash[8];
         /// <summary>
-        /// ÎÄ¼şÃûHash
+        /// æ–‡ä»¶åHash
         /// </summary>
         unsigned __int8 FileNameHash[32];
         /// <summary>
-        /// ÎÄ¼şKey
+        /// æ–‡ä»¶Key
         /// </summary>
         __int64 Key;
         /// <summary>
-        /// ÎÄ¼şĞòºÅ
+        /// æ–‡ä»¶åºå·
         /// </summary>
         __int64 Ordinal;
 
         /// <summary>
-        /// »ñÈ¡ºÏ·¨ĞÔ
+        /// è·å–åˆæ³•æ€§
         /// </summary>
         __declspec(noinline)
         bool IsVaild() const
@@ -41,7 +41,7 @@ namespace Engine
         }
 
         /// <summary>
-        /// »ñÈ¡¼ÓÃÜÄ£Ê½
+        /// è·å–åŠ å¯†æ¨¡å¼
         /// </summary>
         __declspec(noinline)
         unsigned __int32 GetEncryptMode() const
@@ -50,16 +50,16 @@ namespace Engine
         }
 
         /// <summary>
-        /// »ñÈ¡·â°üµÄÃû×Ö
-        /// <para>×î¶à8×Ö½Ú 4¸ö×Ö·û 3¸öUnicode×Ö·û + 0½áÊø·û</para>
+        /// è·å–å°åŒ…çš„åå­—
+        /// <para>æœ€å¤š8å­—èŠ‚ 4ä¸ªå­—ç¬¦ 3ä¸ªUnicodeå­—ç¬¦ + 0ç»“æŸç¬¦</para>
         /// </summary>
-        /// <param name="retValue">×Ö·û·µ»ØÖµÖ¸Õë</param>
+        /// <param name="retValue">å­—ç¬¦è¿”å›å€¼æŒ‡é’ˆ</param>
         __declspec(noinline)
         void GetFakeName(wchar_t* retValue) const
         {
             wchar_t* fakeName = retValue;
 
-            *(__int64*)fakeName = 0;      //Çå¿Õ8×Ö½Ú
+            *(__int64*)fakeName = 0;      //æ¸…ç©º8å­—èŠ‚
 
             unsigned __int32 ordinalLow32 = this->Ordinal & 0x00000000FFFFFFFF;
 
@@ -80,6 +80,10 @@ namespace Engine
 
 	class ExtractCore
 	{
+    private:
+        static constexpr const wchar_t ExtractorOutFolderName[] = L"Extractor_Output";    //æå–å™¨è¾“å‡ºæ–‡ä»¶å¤¹å
+        static constexpr const wchar_t ExtractorLogFileName[] = L"Extractor.log";        //æå–å™¨æ—¥å¿—æ–‡ä»¶å
+
 	private:
 		static constexpr const char CreateStreamSignature[] = "\x55\x8B\xEC\x6A\xFF\x68\x2A\x2A\x2A\x2A\x64\xA1\x00\x00\x00\x00\x50\x51\xA1\x2A\x2A\x2A\x2A\x33\xC5\x50\x8D\x45\xF4\x64\xA3\x00\x00\x00\x00\xA1\x2A\x2A\x2A\x2A\x85\xC0\x75\x32\x68\xB0\x30\x00\x00";
 		static constexpr const char CreateIndexSignature[] = "\x55\x8B\xEC\x6A\xFF\x68\x2A\x2A\x2A\x2A\x64\xA1\x00\x00\x00\x00\x50\x83\xEC\x14\x57\xA1\x2A\x2A\x2A\x2A\x33\xC5\x50\x8D\x45\xF4\x64\xA3\x00\x00\x00\x00\x83\x7D\x08\x00\x0F\x84\x2A\x2A\x00\x00\xA1\x2A\x2A\x2A\x2A\x85\xC0\x75\x12\x68\x2A\x2A\x2A\x2A\xE8\x2A\x2A\x2A\x2A\x83\xC4\x04\xA3\x2A\x2A\x2A\x2A\xFF\x75\x0C\x8D\x4D\xF0\x51\xFF\xD0\xA1\x2A\x2A\x2A\x2A\xC7\x45\xFC\x00\x00\x00\x00\x85\xC0";
@@ -88,10 +92,10 @@ namespace Engine
 		using tCreateStream = IStream* (__cdecl*)(const tTJSString* fakeName, tjs_int64 key, tjs_uint32 encryptMode);
 		using tCreateIndex = tjs_error (__cdecl*)(tTJSVariant* retValue, const tTJSVariant* tjsXP3Name);
 
-		tCreateStream mCreateStreamFunc;		//CxCreateStream´ò¿ªÎÄ¼şÁ÷½Ó¿Ú
-		tCreateIndex mCreateIndexFunc;			//CxCreateIndex»ñÈ¡ÎÄ¼ş±í½Ó¿Ú
+		tCreateStream mCreateStreamFunc;		//CxCreateStreamæ‰“å¼€æ–‡ä»¶æµæ¥å£
+		tCreateIndex mCreateIndexFunc;			//CxCreateIndexè·å–æ–‡ä»¶è¡¨æ¥å£
 
-		std::wstring mExtractDirectoryPath;		//½â°üÊä³öÎÄ¼ş¼Ğ
+		std::wstring mExtractDirectoryPath;		//è§£åŒ…è¾“å‡ºæ–‡ä»¶å¤¹
         Log::Logger mLogger;
 
 	public:
@@ -103,63 +107,63 @@ namespace Engine
         ~ExtractCore();
 
 		/// <summary>
-		/// ÉèÖÃÊä³öÎÄ¼ş¼Ğ
+		/// è®¾ç½®èµ„æºè¾“å‡ºè·¯å¾„
 		/// </summary>
-		/// <param name="directory">ÎÄ¼ş¼Ğ¾ø¶ÔÂ·¾¶</param>
+		/// <param name="directory">æ–‡ä»¶å¤¹ç»å¯¹è·¯å¾„</param>
 		void SetOutputDirectory(const std::wstring& directory);
 
         /// <summary>
-        /// ÉèÖÃÈÕÖ¾Êä³öÂ·¾¶
+        /// è®¾ç½®æ—¥å¿—è¾“å‡ºè·¯å¾„
         /// </summary>
-        /// <param name="path">¾ø¶ÔÂ·¾¶</param>
-        void SetLoggerPath(const std::wstring& path);
+        /// <param name="directory">ç»å¯¹è·¯å¾„</param>
+        void SetLoggerDirectory(const std::wstring& directory);
 
 		/// <summary>
-		/// ³õÊ¼»¯ (ÌØÕ÷ÂëÕÒ½Ó¿Ú)
+		/// åˆå§‹åŒ– (ç‰¹å¾ç æ‰¾æ¥å£)
 		/// </summary>
-		/// <param name="codeVa">´úÂëÆğÊ¼µØÖ·</param>
-		/// <param name="codeSize">´úÂë´óĞ¡</param>
+		/// <param name="codeVa">ä»£ç èµ·å§‹åœ°å€</param>
+		/// <param name="codeSize">ä»£ç å¤§å°</param>
 		void Initialize(PVOID codeVa, DWORD codeSize);
 		/// <summary>
-		/// ¼ì²éÊÇ·ñÒÑ¾­³õÊ¼»¯
+		/// æ£€æŸ¥æ˜¯å¦å·²ç»åˆå§‹åŒ–
 		/// </summary>
-		/// <returns>TrueÒÑ³õÊ¼»¯ FalseÎ´³õÊ¼»¯</returns>
+		/// <returns>Trueå·²åˆå§‹åŒ– Falseæœªåˆå§‹åŒ–</returns>
 		bool IsInitialized();
 		/// <summary>
-		/// ½â°ü
+		/// è§£åŒ…
 		/// </summary>
-		/// <param name="packageFileName">·â°üÃû³Æ</param>
+		/// <param name="packageFileName">å°åŒ…åç§°</param>
 		void ExtractPackage(const std::wstring& packageFileName);
 
 	private:
 		/// <summary>
-		/// »ñÈ¡Hxv4ÎÄ¼ş±í
+		/// è·å–Hxv4æ–‡ä»¶è¡¨
 		/// </summary>
-		/// <param name="xp3PackagePath">·â°ü¾ø¶ÔÂ·¾¶</param>
-		/// <param name="retValue">ÎÄ¼ş±íÊı×é</param>
+		/// <param name="xp3PackagePath">å°åŒ…ç»å¯¹è·¯å¾„</param>
+		/// <param name="retValue">æ–‡ä»¶è¡¨æ•°ç»„</param>
 		void GetEntries(const tTJSString& xp3PackagePath, std::vector<FileEntry>& retValue);
 
         /// <summary>
-        /// ´´½¨×ÊÔ´Á÷
+        /// åˆ›å»ºèµ„æºæµ
         /// </summary>
-        /// <param name="entry">ÎÄ¼ş±í</param>
-        /// <param name="packageName">·â°üÃû</param>
-        /// <returns>IStream¶ÔÏó</returns>
+        /// <param name="entry">æ–‡ä»¶è¡¨</param>
+        /// <param name="packageName">å°åŒ…å</param>
+        /// <returns>IStreamå¯¹è±¡</returns>
         IStream* CreateStream(const FileEntry& entry, const std::wstring& packageName);
 
         /// <summary>
-        /// ÌáÈ¡ÎÄ¼ş
+        /// æå–æ–‡ä»¶
         /// </summary>
-        /// <param name="stream">Á÷</param>
-        /// <param name="extractPath">ÌáÈ¡Â·¾¶</param>
+        /// <param name="stream">æµ</param>
+        /// <param name="extractPath">æå–è·¯å¾„</param>
         void ExtractFile(IStream* stream, const std::wstring& extractPath);
 
         /// <summary>
-        /// ³¢ÊÔ½âÃÜÎÄ±¾
+        /// å°è¯•è§£å¯†æ–‡æœ¬
         /// </summary>
-        /// <param name="stream">×ÊÔ´Á÷</param>
-        /// <param name="output">Êä³ö»º³åÇø</param>
-        /// <returns>True½âÃÜ³É¹¦ False²»ÊÇÎÄ±¾¼ÓÃÜ</returns>
+        /// <param name="stream">èµ„æºæµ</param>
+        /// <param name="output">è¾“å‡ºç¼“å†²åŒº</param>
+        /// <returns>Trueè§£å¯†æˆåŠŸ Falseä¸æ˜¯æ–‡æœ¬åŠ å¯†</returns>
         static bool TryDecryptText(IStream* stream, std::vector<uint8_t>& output);
 	};
 }

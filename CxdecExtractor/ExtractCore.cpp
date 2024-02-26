@@ -1,8 +1,9 @@
-#include "ExtractCore.h"
-#include "Base.h"
+ï»¿#include "ExtractCore.h"
 #include "pe.h"
 #include "file.h"
+#include "directory.h"
 #include "path.h"
+#include "stringhelper.h"
 #include "ExtendUtils.h"
 
 namespace Engine
@@ -20,11 +21,12 @@ namespace Engine
 
 	void ExtractCore::SetOutputDirectory(const std::wstring& directory)
 	{
-		this->mExtractDirectoryPath = directory;
+		this->mExtractDirectoryPath = Path::Combine(directory, ExtractCore::ExtractorOutFolderName);
 	}
 
-	void ExtractCore::SetLoggerPath(const std::wstring& path)
+	void ExtractCore::SetLoggerDirectory(const std::wstring& directory)
 	{
+		std::wstring path = Path::Combine(directory, ExtractCore::ExtractorLogFileName);
 		File::Delete(path);
 		this->mLogger.Open(path.c_str());
 	}
@@ -50,26 +52,26 @@ namespace Engine
 	{
 		if (!this->IsInitialized())
 		{
-			MessageBoxW(nullptr, L"Î´³õÊ¼»¯CxdecV2½Ó¿Ú\nÇë¼ì²éÊÇ·ñÎªÎŞDRMµÄWamsoft Hxv4¼ÓÃÜÓÎÏ·", L"´íÎó", MB_OK);
+			MessageBoxW(nullptr, L"æœªåˆå§‹åŒ–CxdecV2æ¥å£\nè¯·æ£€æŸ¥æ˜¯å¦ä¸ºæ— DRMçš„Wamsoft Hxv4åŠ å¯†æ¸¸æˆ", L"é”™è¯¯", MB_OK);
 			return;
 		}
 
-		tTJSString tjsXp3PackagePath = TVPGetAppPath() + packageFileName.c_str();   //»ñÈ¡·â°ü±ê×¼Â·¾¶
+		tTJSString tjsXp3PackagePath = TVPGetAppPath() + packageFileName.c_str();   //è·å–å°åŒ…æ ‡å‡†è·¯å¾„
 		std::vector<FileEntry> entries = std::vector<FileEntry>();
 
 		this->GetEntries(tjsXp3PackagePath, entries);
 		if (!entries.empty())
 		{
-			FullCreateDirectoryW(this->mExtractDirectoryPath);     //´´½¨×ÊÔ´ÌáÈ¡µ¼³öÎÄ¼ş¼Ğ
+			Directory::Create(this->mExtractDirectoryPath);     //åˆ›å»ºèµ„æºæå–å¯¼å‡ºæ–‡ä»¶å¤¹
 
-			std::wstring extractOutput = this->mExtractDirectoryPath + L"\\";	//µ¼³öÎÄ¼ş¼Ğ
-			std::wstring packageName = Path::GetFileNameWithoutExtension(packageFileName);   //·â°üÃû
-			std::wstring fileTableOutput = extractOutput + packageName + L".alst";      //ÎÄ¼ş±íÊä³öÂ·¾¶
+			std::wstring packageName = Path::GetFileNameWithoutExtension(packageFileName);				//å°åŒ…å		
+			std::wstring extractOutput = Path::Combine(this->mExtractDirectoryPath, packageName);		//è¾“å‡ºæ–‡ä»¶å¤¹
+			std::wstring fileTableOutput = extractOutput + L".alst";									//æ–‡ä»¶è¡¨è¾“å‡ºè·¯å¾„
 
 			File::Delete(fileTableOutput);
 			Log::Logger fileTable = Log::Logger(fileTableOutput.c_str());
 
-			//Ğ´UTF-16LE bomÍ·
+			//å†™UTF-16LE bomå¤´
 			{
 				WORD bom = 0xFEFF;
 				fileTable.WriteData(&bom, sizeof(bom));
@@ -77,13 +79,13 @@ namespace Engine
 
 			for (FileEntry& entry : entries)
 			{
-				std::wstring dirHash = BytesToHexStringW(entry.DirectoryPathHash, sizeof(entry.DirectoryPathHash));  //ÎÄ¼ş¼ĞHash×Ö·û´®ĞÎÊ½
-				std::wstring fileNameHash = BytesToHexStringW(entry.FileNameHash, sizeof(entry.FileNameHash));     //ÎÄ¼şÃûHash×Ö·û´®ĞÎÊ½
-				std::wstring arcOutputPath = extractOutput + packageName + L"\\" + dirHash + L"\\" + fileNameHash;	//¸Ã×ÊÔ´µ¼³öÂ·¾¶
+				std::wstring dirHash = StringHelper::BytesToHexStringW(entry.DirectoryPathHash, sizeof(entry.DirectoryPathHash));  //æ–‡ä»¶å¤¹Hashå­—ç¬¦ä¸²å½¢å¼
+				std::wstring fileNameHash = StringHelper::BytesToHexStringW(entry.FileNameHash, sizeof(entry.FileNameHash));     //æ–‡ä»¶åHashå­—ç¬¦ä¸²å½¢å¼
+				std::wstring arcOutputPath = extractOutput + L"\\" + dirHash + L"\\" + fileNameHash;				//è¯¥èµ„æºå¯¼å‡ºè·¯å¾„
 
 				if (IStream* stream = this->CreateStream(entry, packageFileName))
 				{
-					//Ğ´±í  dirHash[Sign]dirHash[Sign]fileHash[Sign]fileHash[NewLine]
+					//å†™è¡¨  dirHash[Sign]dirHash[Sign]fileHash[Sign]fileHash[NewLine]
 					fileTable.WriteUnicode(L"%s%s%s%s%s%s%s\r\n",
 										   dirHash.c_str(),
 										   ExtractCore::Split,
@@ -92,7 +94,7 @@ namespace Engine
 										   fileNameHash.c_str(),
 										   ExtractCore::Split,
 										   fileNameHash.c_str());
-					//½â°ü
+					//è§£åŒ…
 					this->ExtractFile(stream, arcOutputPath);
 					stream->Release();
 				}
@@ -101,12 +103,12 @@ namespace Engine
 					this->mLogger.WriteLine(L"File Not Exist: %s/%s/%s", packageName.c_str(), dirHash.c_str(), fileNameHash.c_str());
 				}
 			}
-			MessageBoxW(nullptr, (packageFileName + L"ÌáÈ¡³É¹¦").c_str(), L"ÌáÊ¾", MB_OK);
+			MessageBoxW(nullptr, (packageFileName + L"æå–æˆåŠŸ").c_str(), L"ä¿¡æ¯", MB_OK);
 			fileTable.Close();
 		}
 		else
 		{
-			MessageBoxW(nullptr, L"ÇëÑ¡ÔñÕıÈ·µÄXP3·â°ü", L"´íÎó", MB_OK);
+			MessageBoxW(nullptr, L"è¯·é€‰æ‹©æ­£ç¡®çš„XP3å°åŒ…", L"é”™è¯¯", MB_OK);
 		}
 	}
 
@@ -114,7 +116,7 @@ namespace Engine
 	{
 		retValue.clear();
 
-		//¼ÓÔØÎÄ¼ş±í
+		//åŠ è½½æ–‡ä»¶è¡¨
 		tTJSVariant tjsEntries = tTJSVariant();
 		tTJSVariant tjsPackagePath = tTJSVariant(xp3PackagePath);
 		this->mCreateIndexFunc(&tjsEntries, &tjsPackagePath);
@@ -123,60 +125,60 @@ namespace Engine
 		{
 			tTJSVariantClosure& dirEntriesObj = tjsEntries.AsObjectClosureNoAddRef();
 
-			//¶ÁÈ¡Êı×éÏîÊı
+			//è¯»å–æ•°ç»„é¡¹æ•°
 			tTJSVariant tjsCount = tTJSVariant();
 			tjs_int count = 0;
 			dirEntriesObj.PropGet(TJS_MEMBERMUSTEXIST, L"count", NULL, &tjsCount, nullptr);
 			count = tjsCount.AsInteger();
 
 			constexpr tjs_int DirectoryItemSize = 2;
-			//»ñÈ¡ÎÄ¼ş¼ĞÏîÊı (Õ¼KRÊı×é2Ïî)
-			//ÎÄ¼ş¼ĞÂ·¾¶Hash
-			//×ÓÎÄ¼şÊı×é
+			//è·å–æ–‡ä»¶å¤¹é¡¹æ•° (å KRæ•°ç»„2é¡¹)
+			//æ–‡ä»¶å¤¹è·¯å¾„Hash
+			//å­æ–‡ä»¶æ•°ç»„
 			tjs_int dirCount = count / DirectoryItemSize;
 
-			//±éÀúÎÄ¼ş¼Ğ
+			//éå†æ–‡ä»¶å¤¹
 			for (tjs_int di = 0; di < dirCount; ++di)
 			{
-				//»ñÈ¡ÎÄ¼ş¼ĞÂ·¾¶HashÓë×ÓÎÄ¼ş±í
+				//è·å–æ–‡ä»¶å¤¹è·¯å¾„Hashä¸å­æ–‡ä»¶è¡¨
 				tTJSVariant tjsDirHash = tTJSVariant();
 				tTJSVariant tjsFileEntries = tTJSVariant();
 				dirEntriesObj.PropGetByNum(TJS_CII_GET, di * DirectoryItemSize + 0, &tjsDirHash, nullptr);
 				dirEntriesObj.PropGetByNum(TJS_CII_GET, di * DirectoryItemSize + 1, &tjsFileEntries, nullptr);
 
-				//»ñÈ¡Hash
+				//è·å–Hash
 				tTJSVariantOctet* dirHash = tjsDirHash.AsOctetNoAddRef();
 
-				//»ñÈ¡×ÓÎÄ¼ş±íÊı×é
+				//è·å–å­æ–‡ä»¶è¡¨æ•°ç»„
 				tTJSVariantClosure& fileEntries = tjsFileEntries.AsObjectClosureNoAddRef();
 
-				//»ñÈ¡×ÓÎÄ¼şÊı×éÏîÊı
+				//è·å–å­æ–‡ä»¶æ•°ç»„é¡¹æ•°
 				tjsCount.Clear();
 				fileEntries.PropGet(TJS_MEMBERMUSTEXIST, L"count", NULL, &tjsCount, nullptr);
 				count = tjsCount.AsInteger();
 
 				constexpr tjs_int FileItemSize = 2;
-				//»ñÈ¡ÎÄ¼şÏîÊı (Õ¼KRÊı×é2Ïî)
-				//ÎÄ¼şÃûHash
-				//ÎÄ¼şĞÅÏ¢
+				//è·å–æ–‡ä»¶é¡¹æ•° (å KRæ•°ç»„2é¡¹)
+				//æ–‡ä»¶åHash
+				//æ–‡ä»¶ä¿¡æ¯
 				tjs_int fileCount = count / FileItemSize;
 
-				//±éÀú×ÓÎÄ¼ş
+				//éå†å­æ–‡ä»¶
 				for (tjs_int fi = 0; fi < fileCount; ++fi)
 				{
-					//»ñÈ¡ÎÄ¼şÃûHashÓëÎÄ¼şĞÅÏ¢
+					//è·å–æ–‡ä»¶åHashä¸æ–‡ä»¶ä¿¡æ¯
 					tTJSVariant tjsFileNameHash = tTJSVariant();
 					tTJSVariant tjsFileInfo = tTJSVariant();
 					fileEntries.PropGetByNum(TJS_CII_GET, fi * FileItemSize + 0, &tjsFileNameHash, nullptr);
 					fileEntries.PropGetByNum(TJS_CII_GET, fi * FileItemSize + 1, &tjsFileInfo, nullptr);
 
-					//»ñÈ¡Hash
+					//è·å–Hash
 					tTJSVariantOctet* fileNameHash = tjsFileNameHash.AsOctetNoAddRef();
 
-					//»ñÈ¡ÎÄ¼şĞÅÏ¢
+					//è·å–æ–‡ä»¶ä¿¡æ¯
 					tTJSVariantClosure& fileInfo = tjsFileInfo.AsObjectClosureNoAddRef();
 
-					//»ñÈ¡ÎÄ¼şĞÅÏ¢
+					//è·å–æ–‡ä»¶ä¿¡æ¯
 					__int64 ordinal = 0;
 					__int64 key = 0;
 
@@ -188,7 +190,7 @@ namespace Engine
 					fileInfo.PropGetByNum(TJS_CII_GET, 1, &tjsValue, nullptr);
 					key = tjsValue.AsInteger();
 
-					//½âÎöºóµÄÎÄ¼ş±í
+					//è§£æåçš„æ–‡ä»¶è¡¨
 					FileEntry entry{ 0 };
 					memcpy(entry.DirectoryPathHash, dirHash->GetData(), dirHash->GetLength());
 					memcpy(entry.FileNameHash, fileNameHash->GetData(), fileNameHash->GetLength());
@@ -207,10 +209,10 @@ namespace Engine
 		tjs_char fakeName[4]{ 0 };
 		entry.GetFakeName(fakeName);
 
-		tTJSString tjsArcPath = TVPGetAppPath();       //»ñÈ¡ÓÎÏ·Â·¾¶
-		tjsArcPath += packageName.c_str();     //Ìí¼Ó·â°ü
-		tjsArcPath += L">";                    //Ìí¼Ó·â°ü·Ö¸ô·û
-		tjsArcPath += fakeName;    //Ìí¼Ó×ÊÔ´Ãû
+		tTJSString tjsArcPath = TVPGetAppPath();       //è·å–æ¸¸æˆè·¯å¾„
+		tjsArcPath += packageName.c_str();     //æ·»åŠ å°åŒ…
+		tjsArcPath += L">";                    //æ·»åŠ å°åŒ…åˆ†éš”ç¬¦
+		tjsArcPath += fakeName;    //æ·»åŠ èµ„æºå
 		tjsArcPath = TVPNormalizeStorageName(tjsArcPath);
 
 		return this->mCreateStreamFunc(&tjsArcPath, entry.Key, entry.GetEncryptMode());
@@ -218,31 +220,31 @@ namespace Engine
 
 	void ExtractCore::ExtractFile(IStream* stream, const std::wstring& extractPath)
 	{
-		unsigned long long size = StreamUtils::IStreamEx::Length(stream);	//»ñÈ¡Á÷³¤¶È
+		unsigned long long size = StreamUtils::IStreamEx::Length(stream);	//è·å–æµé•¿åº¦
 
-		//Ïà¶ÔÂ·¾¶
+		//ç›¸å¯¹è·¯å¾„
 		std::wstring relativePath(&extractPath.c_str()[this->mExtractDirectoryPath.length() + 1]);
 		if (size > 0)
 		{
-			//´´½¨ÎÄ¼ş¼Ğ
+			//åˆ›å»ºæ–‡ä»¶å¤¹
 			{
 				std::wstring outputDir = Path::GetDirectoryName(extractPath);
 				if (!outputDir.empty())
 				{
-					FullCreateDirectoryW(outputDir.c_str());
+					Directory::Create(outputDir.c_str());
 				}
 			}
 
 			std::vector<uint8_t> buffer;
 			bool success = false;
 
-			if (ExtractCore::TryDecryptText(stream, buffer))  //³¢ÊÔ½âÃÜSimpleEncrypt
+			if (ExtractCore::TryDecryptText(stream, buffer))  //å°è¯•è§£å¯†SimpleEncrypt
 			{
 				success = true;
 			}
 			else
 			{
-				//ÆÕÍ¨×ÊÔ´
+				//æ™®é€šèµ„æº
 				buffer.resize(size);
 
 				stream->Seek(LARGE_INTEGER{ 0 }, STREAM_SEEK_SET, NULL);
@@ -254,7 +256,7 @@ namespace Engine
 
 			if (success && !buffer.empty())
 			{
-				//±£´æÎÄ¼ş
+				//ä¿å­˜æ–‡ä»¶
 				if (File::WriteAllBytes(extractPath, buffer.data(), buffer.size()))
 				{
 					this->mLogger.WriteLine(L"Extract Successed: %s", relativePath.c_str());
@@ -282,12 +284,12 @@ namespace Engine
 		uint8_t mark[2]{ 0 };
 		StreamUtils::IStreamEx::Read(stream, mark, 2);
 
-		if (mark[0] == 0xfe && mark[1] == 0xfe)   //¼ì²é¼ÓÃÜ±ê¼ÇÍ·
+		if (mark[0] == 0xfe && mark[1] == 0xfe)   //æ£€æŸ¥åŠ å¯†æ ‡è®°å¤´
 		{
 			uint8_t mode;
 			StreamUtils::IStreamEx::Read(stream, &mode, 1);
 
-			if (mode != 0 && mode != 1 && mode != 2)  //Ê¶±ğÄ£Ê½
+			if (mode != 0 && mode != 1 && mode != 2)  //è¯†åˆ«æ¨¡å¼
 			{
 				return false;
 			}
@@ -300,7 +302,7 @@ namespace Engine
 				return false;
 			}
 
-			if (mode == 2)   //Ñ¹ËõÄ£Ê½
+			if (mode == 2)   //å‹ç¼©æ¨¡å¼
 			{
 				long long compressed = 0;
 				long long uncompressed = 0;
@@ -314,7 +316,7 @@ namespace Engine
 
 				std::vector<uint8_t> data = std::vector<uint8_t>((size_t)compressed);
 
-				//¶ÁÈ¡Ñ¹ËõÊı¾İ
+				//è¯»å–å‹ç¼©æ•°æ®
 				if (StreamUtils::IStreamEx::Read(stream, data.data(), compressed) != compressed)
 				{
 					return false;
@@ -322,7 +324,7 @@ namespace Engine
 
 				std::vector<uint8_t> buffer = std::vector<uint8_t>((size_t)uncompressed + 2);
 
-				//Ğ´ÈëBomÍ·
+				//å†™å…¥Bomå¤´
 				buffer[0] = mark[0];
 				buffer[1] = mark[1];
 
@@ -339,12 +341,12 @@ namespace Engine
 			}
 			else
 			{
-				long long startpos = StreamUtils::IStreamEx::Position(stream); //½âÃÜÆğÊ¼Î»ÖÃ
-				long long endpos = StreamUtils::IStreamEx::Length(stream); //½âÃÜ½áÊøÎ»ÖÃ
+				long long startpos = StreamUtils::IStreamEx::Position(stream); //è§£å¯†èµ·å§‹ä½ç½®
+				long long endpos = StreamUtils::IStreamEx::Length(stream); //è§£å¯†ç»“æŸä½ç½®
 
-				StreamUtils::IStreamEx::Seek(stream, startpos, STREAM_SEEK_SET);      //ÉèÖÃ»ØÆğÊ¼Î»ÖÃ
+				StreamUtils::IStreamEx::Seek(stream, startpos, STREAM_SEEK_SET);      //è®¾ç½®å›èµ·å§‹ä½ç½®
 
-				long long size = endpos - startpos;   //½âÃÜ´óĞ¡
+				long long size = endpos - startpos;   //è§£å¯†å¤§å°
 
 				if (size <= 0 || size >= INT_MAX)
 				{
@@ -358,11 +360,11 @@ namespace Engine
 					return false;
 				}
 
-				std::vector<wchar_t> buffer(count);  //´æ·ÅÎÄ±¾
+				std::vector<wchar_t> buffer(count);  //å­˜æ”¾æ–‡æœ¬
 
-				StreamUtils::IStreamEx::Read(stream, buffer.data(), size);  //¶ÁÈ¡×ÊÔ´
+				StreamUtils::IStreamEx::Read(stream, buffer.data(), size);  //è¯»å–èµ„æº
 
-				if (mode == 0)  //Ä£Ê½0
+				if (mode == 0)  //æ¨¡å¼0
 				{
 					for (size_t i = 0; i < count; i++)
 					{
@@ -370,7 +372,7 @@ namespace Engine
 						if (ch >= 0x20) buffer[i] = ch ^ (((ch & 0xfe) << 8) ^ 1);
 					}
 				}
-				else if (mode == 1)   //Ä£Ê½1
+				else if (mode == 1)   //æ¨¡å¼1
 				{
 					for (size_t i = 0; i < count; i++)
 					{
@@ -384,11 +386,11 @@ namespace Engine
 
 				output.resize(sizeToCopy + 2);
 
-				//Ğ´ÈëUnicode Bom
+				//å†™å…¥Unicode Bom
 				output[0] = mark[0];
 				output[1] = mark[1];
 
-				//»ØĞ´½âÃÜºóµÄÊı¾İ
+				//å›å†™è§£å¯†åçš„æ•°æ®
 				memcpy(output.data() + 2, buffer.data(), sizeToCopy);
 
 				return true;

@@ -19,9 +19,6 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\Common\Base.cpp">
-      <Filter>Commom</Filter>
-    </ClCompile>
     <ClCompile Include="..\Common\encoding.cpp">
       <Filter>Commom</Filter>
     </ClCompile>
@@ -67,11 +64,11 @@
     <ClCompile Include="ExtractCore.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\Common\directory.cpp">
+      <Filter>Commom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Common\Base.h">
-      <Filter>Commom</Filter>
-    </ClInclude>
     <ClInclude Include="..\Common\encoding.h">
       <Filter>Commom</Filter>
     </ClInclude>
@@ -107,6 +104,9 @@
     </ClInclude>
     <ClInclude Include="ExtendUtils.h">
       <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\directory.h">
+      <Filter>Commom</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

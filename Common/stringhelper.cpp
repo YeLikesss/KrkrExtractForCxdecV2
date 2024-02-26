@@ -4,6 +4,7 @@
 #include <string>
 #include <cstdarg>
 #include <vector>
+#include "stringhelper.h"
 
 namespace StringHelper
 {
@@ -289,28 +290,16 @@ namespace StringHelper
 		return output;
 	}
 
-
-	std::vector<std::wstring> ReadAllLine(const std::wstring& text) 
+	std::wstring StringHelper::BytesToHexStringW(unsigned __int8* data, unsigned __int32 length)
 	{
-		std::vector<std::wstring> result;
+		constexpr const wchar_t hexStringW[32] = L"0123456789ABCDEF";
 
-		std::wstring pattern(L"\r\n");		//CRLF
-
-		size_t size = text.size();
-		size_t pos;
-
-		//循环查找
-		for (size_t index = 0; index < size; index++) 
+		std::wstring s;
+		for (unsigned __int32 index = 0; index < length; index++)
 		{
-			pos = text.find(pattern, index);		//搜索字符串
-			if (pos < size && pos != std::wstring::npos) 
-			{
-				result.push_back(text.substr(index, pos - index));  //搜索成功
-				index = pos + pattern.size() - 1;	//索引移动到匹配字符串后面  此处-1因为for循环自增
-			}
+			s += hexStringW[(data[index] & 0xF0) >> 4];
+			s += hexStringW[(data[index] & 0x0F) >> 0];
 		}
-		return result;
+		return s;
 	}
-
-
 }

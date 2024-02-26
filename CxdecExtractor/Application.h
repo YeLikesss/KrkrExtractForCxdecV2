@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <string>
 #include "ExtractCore.h"
@@ -18,49 +18,49 @@ namespace Engine
 		~Application();
 
 	private:
-		HMODULE mModuleBase;				//dll»ù´¡µØÖ·
-		std::wstring mDllDirectoryPath;		//dllÄ¿Â¼
-		std::wstring mCurrentDirectoryPath;	  //ÓÎÏ·µ±Ç°Ä¿Â¼
-		ExtractCore* mExtractor;			//½â°üÆ÷
-		bool mTVPExporterInitialized;		//²å¼ş³õÊ¼»¯³É¹¦±êÖ¾
+		HMODULE mModuleBase;				//dllåŸºç¡€åœ°å€
+		std::wstring mDllDirectoryPath;		//dllç›®å½•
+		std::wstring mCurrentDirectoryPath;	//æ¸¸æˆå½“å‰ç›®å½•
+		ExtractCore* mExtractor;			//è§£åŒ…å™¨
+		bool mTVPExporterInitialized;		//æ’ä»¶åˆå§‹åŒ–æˆåŠŸæ ‡å¿—
 
 	public:
 
 		/// <summary>
-		/// ÉèÖÃÄ£¿éĞÅÏ¢
+		/// è®¾ç½®æ¨¡å—ä¿¡æ¯
 		/// </summary>
-		/// <param name="hModule">Ä£¿éĞÅÏ¢</param>
+		/// <param name="hModule">æ¨¡å—ä¿¡æ¯</param>
 		void InitializeModule(HMODULE hModule);
 
 		/// <summary>
-		/// ³õÊ¼»¯²å¼ş
+		/// åˆå§‹åŒ–æ’ä»¶
 		/// </summary>
-		/// <param name="exporter">²å¼şµ¼³öº¯Êı</param>
+		/// <param name="exporter">æ’ä»¶å¯¼å‡ºå‡½æ•°</param>
 		void InitializeTVPEngine(iTVPFunctionExporter* exporter);
 
 		/// <summary>
-		/// »ñÈ¡²å¼şÊÇ·ñ³õÊ¼»¯Íê±Ï
+		/// è·å–æ’ä»¶æ˜¯å¦åˆå§‹åŒ–å®Œæ¯•
 		/// </summary>
-		/// <returns>TrueÒÑ³õÊ¼»¯ FalseÎ´³õÊ¼»¯</returns>
+		/// <returns>Trueå·²åˆå§‹åŒ– Falseæœªåˆå§‹åŒ–</returns>
 		bool IsTVPEngineInitialize();
 
 		/// <summary>
-		/// »ñÈ¡½â°üÆ÷
+		/// è·å–è§£åŒ…å™¨
 		/// </summary>
 		/// <returns></returns>
 		ExtractCore* GetExtractor();
 
 		/// <summary>
-		/// »ñÈ¡¶ÔÏóÊµÀı
+		/// è·å–å¯¹è±¡å®ä¾‹
 		/// </summary>
 		static Application* GetInstance();
 		/// <summary>
-		/// ³õÊ¼»¯
+		/// åˆå§‹åŒ–
 		/// </summary>
-		/// <param name="hModule">Ä£¿éĞÅÏ¢</param>
+		/// <param name="hModule">æ¨¡å—ä¿¡æ¯</param>
 		static void Initialize(HMODULE hModule);
 		/// <summary>
-		/// ÊÍ·Å
+		/// é‡Šæ”¾
 		/// </summary>
 		static void Release();
 	};

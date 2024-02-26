@@ -154,7 +154,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Common\Base.cpp" />
+    <ClCompile Include="..\Common\directory.cpp" />
     <ClCompile Include="..\Common\encoding.cpp" />
     <ClCompile Include="..\Common\file.cpp" />
     <ClCompile Include="..\Common\log.cpp" />
@@ -173,7 +173,7 @@
     <ClCompile Include="ExtractCore.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Common\Base.h" />
+    <ClInclude Include="..\Common\directory.h" />
     <ClInclude Include="..\Common\encoding.h" />
     <ClInclude Include="..\Common\file.h" />
     <ClInclude Include="..\Common\log.h" />

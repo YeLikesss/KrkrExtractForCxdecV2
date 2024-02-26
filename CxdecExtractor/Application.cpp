@@ -1,4 +1,4 @@
-#include "Application.h"
+Ôªø#include "Application.h"
 #include "path.h"
 #include "util.h"
 #include "ExtendUtils.h"
@@ -6,11 +6,11 @@
 namespace Engine
 {
     /// <summary>
-    /// µ• µ¿˝
+    /// ÂçïÂÆû‰æã
     /// </summary>
     static Application* g_Instance = nullptr;
 
-    //Hook≤Âº˛π¶ƒ‹
+    //HookÊèí‰ª∂ÂäüËÉΩ
     tTVPV2LinkProc g_V2Link = nullptr;
     HRESULT __stdcall HookV2Link(iTVPFunctionExporter* exporter)
     {
@@ -18,37 +18,37 @@ namespace Engine
         HookUtils::InlineHook::UnHook(g_V2Link, HookV2Link);
         g_V2Link = nullptr;
 
-        //≥ı ºªØ≤Âº˛
+        //ÂàùÂßãÂåñÊèí‰ª∂
         Application::GetInstance()->InitializeTVPEngine(exporter);
 
         return result;
     }
 
-    //Hook≤Âº˛º”‘ÿ
+    //HookÊèí‰ª∂Âä†ËΩΩ
     auto g_GetProcAddressFunction = GetProcAddress;
     FARPROC WINAPI HookGetProcAddress(HMODULE hModule, LPCSTR lpProcName)
     {
         FARPROC result = g_GetProcAddressFunction(hModule, lpProcName);
         if (result)
         {
-            // ∫ˆ¬‘–Ú∫≈µº≥ˆ
+            // ÂøΩÁï•Â∫èÂè∑ÂØºÂá∫
             if (HIWORD(lpProcName) != 0)
             {
                 if (strcmp(lpProcName, "V2Link") == 0)
                 {
-                    //NtÕ∑∆´“∆
+                    //NtÂ§¥ÂÅèÁßª
                     PIMAGE_NT_HEADERS ntHeader = PIMAGE_NT_HEADERS((ULONG_PTR)hModule + ((PIMAGE_DOS_HEADER)hModule)->e_lfanew);
-                    //ø…—°Õ∑¥Û–°
+                    //ÂèØÈÄâÂ§¥Â§ßÂ∞è
                     DWORD optionalHeaderSize = ntHeader->FileHeader.SizeOfOptionalHeader;
-                    //µ⁄“ª∏ˆΩ⁄±Ì(¥˙¬Î∂Œ)
+                    //Á¨¨‰∏Ä‰∏™ËäÇË°®(‰ª£Á†ÅÊÆµ)
                     PIMAGE_SECTION_HEADER codeSectionHeader = (PIMAGE_SECTION_HEADER)((ULONG_PTR)ntHeader + sizeof(ntHeader->Signature) + sizeof(IMAGE_FILE_HEADER) + optionalHeaderSize);
 
-                    DWORD codeStartRva = codeSectionHeader->VirtualAddress;  //¥˙¬Î∂Œ∆ ºRVA
-                    DWORD codeSize = codeSectionHeader->SizeOfRawData;		//¥˙¬Î∂Œ¥Û–°
+                    DWORD codeStartRva = codeSectionHeader->VirtualAddress;  //‰ª£Á†ÅÊÆµËµ∑ÂßãRVA
+                    DWORD codeSize = codeSectionHeader->SizeOfRawData;		//‰ª£Á†ÅÊÆµÂ§ßÂ∞è
 
-                    ULONG_PTR codeStartVa = (ULONG_PTR)hModule + codeStartRva;      //¥˙¬Î∂Œ∆ ºVA
+                    ULONG_PTR codeStartVa = (ULONG_PTR)hModule + codeStartRva;      //‰ª£Á†ÅÊÆµËµ∑ÂßãVA
 
-                    //≥ı ºªØ
+                    //ÂàùÂßãÂåñ
                     Application* app = Application::GetInstance();
                     if (!app->IsTVPEngineInitialize())
                     {
@@ -56,14 +56,14 @@ namespace Engine
                         HookUtils::InlineHook::Hook(g_V2Link, HookV2Link);
                     }
 
-                    //Ω‚∞¸Ω”ø⁄
+                    //Ëß£ÂåÖÊé•Âè£
                     ExtractCore* extractor = app->GetExtractor();
                     if (!extractor->IsInitialized())
                     {
                         extractor->Initialize((PVOID)codeStartVa, codeSize);
                     }
 
-                    //≥ı ºªØÕÍ±œ Ω‚≥˝Hook
+                    //ÂàùÂßãÂåñÂÆåÊØï Ëß£Èô§Hook
                     if (extractor->IsInitialized())
                     {
                         HookUtils::InlineHook::UnHook(g_GetProcAddressFunction, HookGetProcAddress);
@@ -84,8 +84,8 @@ namespace Engine
         this->mTVPExporterInitialized = false;
         this->mExtractor = new ExtractCore();
 
-        std::wstring extractDirectpry = this->mCurrentDirectoryPath + L"\\Archive_Output";
-        this->mExtractor->SetOutputDirectory(extractDirectpry);
+        //ËÆæÁΩÆËß£ÂåÖËæìÂá∫Ë∑ØÂæÑ
+        this->mExtractor->SetOutputDirectory(this->mCurrentDirectoryPath);
     }
 
     Application::~Application()
@@ -102,8 +102,8 @@ namespace Engine
         this->mModuleBase = hModule;
         this->mDllDirectoryPath = Path::GetDirectoryName(Util::GetModulePathW(hModule));
 
-        std::wstring extractLogPath = this->mDllDirectoryPath + L"\\ExtractCore.log";
-        this->mExtractor->SetLoggerPath(extractLogPath);
+        //ËÆæÁΩÆLogËæìÂá∫Ë∑ØÂæÑ
+        this->mExtractor->SetLoggerDirectory(this->mDllDirectoryPath);
     }
 
     void Application::InitializeTVPEngine(iTVPFunctionExporter* exporter)

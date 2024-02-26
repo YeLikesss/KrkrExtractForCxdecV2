@@ -4,7 +4,7 @@
 #include <fstream>
 #include <limits>
 #include <cstdio>
-
+#include "file.h"
 
 namespace File
 {

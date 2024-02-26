@@ -2,6 +2,7 @@
 
 #include <windows.h>
 #include <string>
+#include "path.h"
 
 namespace Path
 {
@@ -324,45 +325,59 @@ namespace Path
 	}
 
 
-
-}
-
-
-bool CheckDirectoryExist(const std::wstring& dirPath) 
-{
-	//判断文件夹是否存在
-	DWORD fileAttr = GetFileAttributesW(dirPath.c_str());
-	if ((int)fileAttr == -1 || (fileAttr & FILE_ATTRIBUTE_DIRECTORY) == 0)
+	std::string Combine(const std::string& dir, const std::string& fileName)
 	{
-		return false;
-	}
-	return true;
-}
-
-
-bool CheckFileExist(const std::wstring& filePath)
-{
-	//判断文件是否存在
-	DWORD fileAttr = GetFileAttributesW(filePath.c_str());
-	if ((int)fileAttr == -1 || (fileAttr & FILE_ATTRIBUTE_DIRECTORY))
-	{
-		return false;
-	}
-	return true;
-}
-
-//创建文件夹
-void FullCreateDirectoryW(const std::wstring& dirPath)
-{
-	//判断文件夹是否存在
-	DWORD fileAttr = GetFileAttributesW(dirPath.c_str());
-	if ((int)fileAttr == -1 || (fileAttr & FILE_ATTRIBUTE_DIRECTORY) == 0)
-	{
-		//逐级创建文件夹
-		if (!CreateDirectoryW(dirPath.c_str(), NULL))
+		if (dir.empty())
 		{
-			FullCreateDirectoryW(Path::GetDirectoryName(dirPath));
-			CreateDirectoryW(dirPath.c_str(), NULL);
+			return fileName;
 		}
+
+		const char& lastChar = dir.back();
+		if (lastChar == '\\' || lastChar == '/')
+		{
+			return dir + fileName;
+		}
+		else
+		{
+			return dir + '\\' + fileName;
+		}
+	}
+
+	std::wstring Combine(const std::wstring& dir, const std::wstring& fileName)
+	{
+		if (dir.empty())
+		{
+			return fileName;
+		}
+
+		const wchar_t& lastChar = dir.back();
+		if (lastChar == L'\\' || lastChar == L'/')
+		{
+			return dir + fileName;
+		}
+		else
+		{
+			return dir + L'\\' + fileName;
+		}
+	}
+
+	bool Exists(const std::string& filePath)
+	{
+		DWORD fileAttr = GetFileAttributesA(filePath.c_str());
+		if (fileAttr == INVALID_FILE_ATTRIBUTES || (fileAttr & FILE_ATTRIBUTE_DIRECTORY))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	bool Exists(const std::wstring& filePath)
+	{
+		DWORD fileAttr = GetFileAttributesW(filePath.c_str());
+		if (fileAttr == INVALID_FILE_ATTRIBUTES || (fileAttr & FILE_ATTRIBUTE_DIRECTORY))
+		{
+			return false;
+		}
+		return true;
 	}
 }

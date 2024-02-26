@@ -98,7 +98,7 @@ namespace Log
 		auto utf = Encoding::UnicodeToAnsi(unicode, Encoding::CodePage::UTF_8);
 		auto timestamp = GetTimeString();
 
-		auto output = timestamp + " | " + utf + "\n";
+		auto output = timestamp + " | " + utf + "\r\n";
 
 		fwrite(output.data(), output.length(), 1, m_pOutput);
 		fflush(m_pOutput);
@@ -139,7 +139,7 @@ namespace Log
 		auto utf = Encoding::UnicodeToAnsi(content, Encoding::CodePage::UTF_8);
 		auto timestamp = GetTimeString();
 
-		auto output = timestamp + " | " + utf + "\n";
+		auto output = timestamp + " | " + utf + "\r\n";
 
 		fwrite(output.data(), output.length(), 1, m_pOutput);
 		fflush(m_pOutput);

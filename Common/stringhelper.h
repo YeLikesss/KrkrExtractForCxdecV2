@@ -26,6 +26,5 @@ namespace StringHelper
 	std::wstring Format(const wchar_t* format, ...);
 	std::wstring VFormat(const wchar_t* format, va_list ap);
 
-	//读取文本中所有行 (CRLF)
-	std::vector<std::wstring> ReadAllLine(const std::wstring& text);
+	std::wstring BytesToHexStringW(unsigned __int8* data, unsigned __int32 length);
 }

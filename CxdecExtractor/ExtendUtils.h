@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <windows.h>
 #include "detours.h"
@@ -50,7 +50,7 @@ namespace Engine
 			~IStreamEx() = delete;
 
 			/// <summary>
-			/// »ñÈ¡Á÷³¤¶È
+			/// è·å–æµé•¿åº¦
 			/// </summary>
 			/// <param name="stream"></param>
 			static ULONGLONG WINAPI Length(IStream* stream)
@@ -65,7 +65,7 @@ namespace Engine
 				return size.QuadPart;
 			}
 			/// <summary>
-			/// »ñÈ¡µ±Ç°Á÷Î»ÖÃ
+			/// è·å–å½“å‰æµä½ç½®
 			/// </summary>
 			/// <param name="stream"></param>
 			static ULONGLONG WINAPI Position(IStream* stream)
@@ -75,7 +75,7 @@ namespace Engine
 				return pos.QuadPart;
 			}
 			/// <summary>
-			/// ÉèÖÃµ±Ç°Á÷Î»ÖÃ
+			/// è®¾ç½®å½“å‰æµä½ç½®
 			/// </summary>
 			/// <param name="stream"></param>
 			/// <param name="offset"></param>
@@ -87,7 +87,7 @@ namespace Engine
 				stream->Seek(move, seekMode, NULL);
 			}
 			/// <summary>
-			/// ¶ÁÈ¡Á÷
+			/// è¯»å–æµ
 			/// </summary>
 			/// <param name="stream"></param>
 			/// <param name="buffer"></param>
