@@ -13,18 +13,18 @@
 
 &emsp;&emsp;2.功能拆分, 此项目仅支持解包, 无其他功能
 
-&emsp;&emsp;3.修复bug
+&emsp;&emsp;3.修复许多bug
 
 ## 如何使用
 &emsp;&emsp;1. `CxdecExtractorLoader.exe`, `CxdecExtractor.dll`, `CxdecExtractorUI.dll`保持同一目录
 
 &emsp;&emsp;2. 保证你的游戏是Wamsoft KrkrZ Hxv4加密类型且加密认证已移除
 
-&emsp;&emsp;3. 拖拽xxx.exe到`CxdecExtractorLoader.exe`启动, 弹出解包响应框, 拖拽xxx.xp3到响应框内解包
+&emsp;&emsp;3. 拖拽游戏exe到`CxdecExtractorLoader.exe`启动, 弹出解包响应框, 拖拽`xxx.xp3`到响应框内解包
 
-&emsp;&emsp;4. 程序不会申请管理员权限弹出UAC提权, 游戏与工具务必不要放在C盘
+&emsp;&emsp;4. 工具不会申请管理员权限进行弹出UAC提权, 游戏与工具务必不要放在C盘
 
-&emsp;&emsp;5. 提取后游戏资源位于`游戏目录\Extractor_Output\`文件夹, 包含xxx文件夹的封包资源与xxx.alst的文件表
+&emsp;&emsp;5. 提取后游戏资源位于`游戏目录\Extractor_Output\`文件夹, 包含`xxx文件夹`的封包资源与`xxx.alst`的文件表
 
 &emsp;&emsp;6. 提取日志信息为`工具目录\Extractor.log`文件
 
@@ -41,7 +41,7 @@
 
 &emsp;&emsp;Q: 解包响应框解包时候无响应
 
-&emsp;&emsp;A: 没做多线程支持, 等它解完就好
+&emsp;&emsp;A: 没做多线程支持, 等它慢慢解完就好
 
 &emsp;&emsp;Q: 兼容Win7以外的系统吗
 

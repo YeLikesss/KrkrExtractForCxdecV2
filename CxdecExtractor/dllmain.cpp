@@ -10,7 +10,6 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
     {
         case DLL_PROCESS_ATTACH:
         {
-            MessageBoxW(0, 0, 0, 0);
             Engine::Application::Initialize(hModule);
             break;
         }
@@ -34,8 +33,4 @@ extern "C" __declspec(dllexport) void WINAPI ExtractPackage(const wchar_t* packa
 {
     Engine::Application::GetInstance()->GetExtractor()->ExtractPackage(packageName);
 }
-
-
-
-
 
