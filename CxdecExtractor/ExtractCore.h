@@ -34,7 +34,6 @@ namespace Engine
         /// <summary>
         /// 获取合法性
         /// </summary>
-        __declspec(noinline)
         bool IsVaild() const
         {
             return this->Ordinal >= 0;
@@ -43,7 +42,6 @@ namespace Engine
         /// <summary>
         /// 获取加密模式
         /// </summary>
-        __declspec(noinline)
         unsigned __int32 GetEncryptMode() const
         {
             return ((this->Ordinal & 0x0000FFFF00000000i64) >> 32);
