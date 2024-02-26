@@ -52,7 +52,6 @@ namespace Engine
         /// <para>最多8字节 4个字符 3个Unicode字符 + 0结束符</para>
         /// </summary>
         /// <param name="retValue">字符返回值指针</param>
-        __declspec(noinline)
         void GetFakeName(wchar_t* retValue) const
         {
             wchar_t* fakeName = retValue;
