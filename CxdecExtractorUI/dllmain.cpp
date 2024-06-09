@@ -28,7 +28,7 @@ INT_PTR CALLBACK ExtractorDialogWindProc(HWND hwnd, UINT msg, WPARAM wParam, LPA
             HDROP hDrop = (HDROP)wParam;
             wchar_t fullName[MaxPath];
             //只获取第一项
-            if (UINT strLen = ::DragQueryFileW(hDrop, 0, fullName, MaxPath))
+            if (UINT strLen = ::DragQueryFileW(hDrop, 0u, fullName, MaxPath))
             {
                 DWORD attr = ::GetFileAttributesW(fullName);
                 if (attr != INVALID_FILE_ATTRIBUTES && (attr & FILE_ATTRIBUTE_ARCHIVE) == FILE_ATTRIBUTE_ARCHIVE)
@@ -61,11 +61,11 @@ INT_PTR CALLBACK ExtractorDialogWindProc(HWND hwnd, UINT msg, WPARAM wParam, LPA
 /// <param name="hInstance">模块基地址</param>
 DWORD WINAPI WinExtractorEntry(LPVOID hInstance) 
 {
-    HWND hwnd = ::CreateDialogParamW((HINSTANCE)hInstance, MAKEINTRESOURCEW(IDD_MainForm), NULL, ExtractorDialogWindProc, 0);
+    HWND hwnd = ::CreateDialogParamW((HINSTANCE)hInstance, MAKEINTRESOURCEW(IDD_MainForm), NULL, ExtractorDialogWindProc, 0u);
     ::ShowWindow(hwnd, SW_NORMAL);
 
     MSG msg{ };
-    while (BOOL ret = ::GetMessageW(&msg, NULL, 0, 0))
+    while (BOOL ret = ::GetMessageW(&msg, NULL, 0u, 0u))
     {
         if (ret == -1) 
         {
@@ -77,7 +77,7 @@ DWORD WINAPI WinExtractorEntry(LPVOID hInstance)
             ::DispatchMessageW(&msg);
         }
     }
-    return 0;
+    return 0u;
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
@@ -97,7 +97,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
             if (HMODULE coreBase = ::LoadLibraryW(moduleFullPath))
             {
                 g_ExtractPackage = (tExtractFunc)::GetProcAddress(coreBase, "ExtractPackage");
-                if (HANDLE hThread = ::CreateThread(NULL, 0, WinExtractorEntry, hModule, 0, NULL))
+                if (HANDLE hThread = ::CreateThread(NULL, 0u, WinExtractorEntry, hModule, 0u, NULL))
                 {
                     ::CloseHandle(hThread);
                 }
