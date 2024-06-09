@@ -13,20 +13,19 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{26785597-4b94-439f-ae7e-4f41a4010be1}</ProjectGuid>
-    <RootNamespace>CxdecExtractorLoader</RootNamespace>
+    <ProjectGuid>{3adcce05-606f-4818-833d-e0e78230e8b0}</ProjectGuid>
+    <RootNamespace>CxdecStringDumper</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>CxdecExtractorLoader</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -45,56 +44,56 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <ManagedAssembly>false</ManagedAssembly>
-    <EmbedManifest>true</EmbedManifest>
-    <GenerateManifest>true</GenerateManifest>
     <LinkDelaySign>false</LinkDelaySign>
+    <GenerateManifest>false</GenerateManifest>
+    <EmbedManifest>false</EmbedManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <GenerateManifest>true</GenerateManifest>
-    <EmbedManifest>true</EmbedManifest>
-    <ManagedAssembly>false</ManagedAssembly>
+    <GenerateManifest>false</GenerateManifest>
     <LinkDelaySign>false</LinkDelaySign>
+    <EmbedManifest>false</EmbedManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_WIN32_WINNT=0x601;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-      <ExceptionHandling>false</ExceptionHandling>
-      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>$(SolutionDir)Detours;$(SolutionDir)Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x601;WIN32;_DEBUG;CXDECSTRINGDUMPER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <CompileAsManaged>false</CompileAsManaged>
+      <ExceptionHandling>false</ExceptionHandling>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableParallelCodeGeneration>false</EnableParallelCodeGeneration>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <CreateHotpatchableImage>false</CreateHotpatchableImage>
       <GuardEHContMetadata>false</GuardEHContMetadata>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <OpenMPSupport>false</OpenMPSupport>
       <EnableModules>false</EnableModules>
-      <CompileAsManaged>false</CompileAsManaged>
-      <CompileAsWinRT>false</CompileAsWinRT>
-      <MultiProcessorCompilation>false</MultiProcessorCompilation>
-      <ControlFlowGuard>false</ControlFlowGuard>
-      <CreateHotpatchableImage>false</CreateHotpatchableImage>
       <BuildStlModules>false</BuildStlModules>
-      <EnableParallelCodeGeneration>false</EnableParallelCodeGeneration>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <AdditionalIncludeDirectories>$(SolutionDir)Common;$(SolutionDir)KrkrPlugin;$(SolutionDir)Detours;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <ControlFlowGuard>false</ControlFlowGuard>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <FloatingPointExceptions>false</FloatingPointExceptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <PreventDllBinding>false</PreventDllBinding>
+      <EnableUAC>false</EnableUAC>
+      <WindowsMetadataLinkDelaySign>false</WindowsMetadataLinkDelaySign>
+      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>false</DataExecutionPrevention>
-      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
-      <WindowsMetadataLinkDelaySign>false</WindowsMetadataLinkDelaySign>
       <SupportNobindOfDelayLoadedDLL>true</SupportNobindOfDelayLoadedDLL>
       <CETCompat>false</CETCompat>
-      <EnableUAC>false</EnableUAC>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <PreventDllBinding>false</PreventDllBinding>
       <LargeAddressAware>false</LargeAddressAware>
     </Link>
     <Manifest>
@@ -106,48 +105,46 @@
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_WIN32_WINNT=0x601;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-      <ExceptionHandling>false</ExceptionHandling>
-      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>$(SolutionDir)Detours;$(SolutionDir)Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <RuntimeTypeInfo>false</RuntimeTypeInfo>
-      <CompileAsManaged>false</CompileAsManaged>
       <SDLCheck>false</SDLCheck>
-      <OpenMPSupport>false</OpenMPSupport>
-      <GuardEHContMetadata>false</GuardEHContMetadata>
-      <EnableModules>false</EnableModules>
-      <CompileAsWinRT>false</CompileAsWinRT>
-      <OmitFramePointers>false</OmitFramePointers>
-      <ControlFlowGuard>false</ControlFlowGuard>
-      <FloatingPointExceptions>false</FloatingPointExceptions>
-      <CreateHotpatchableImage>false</CreateHotpatchableImage>
-      <GuardSignedReturns>
-      </GuardSignedReturns>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x601;WIN32;NDEBUG;CXDECSTRINGDUMPER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <CompileAsManaged>false</CompileAsManaged>
+      <ExceptionHandling>false</ExceptionHandling>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
       <EnableParallelCodeGeneration>false</EnableParallelCodeGeneration>
-      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <CreateHotpatchableImage>false</CreateHotpatchableImage>
+      <GuardEHContMetadata>false</GuardEHContMetadata>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <OpenMPSupport>false</OpenMPSupport>
+      <EnableModules>false</EnableModules>
       <BuildStlModules>false</BuildStlModules>
+      <RemoveUnreferencedCodeData>false</RemoveUnreferencedCodeData>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <ControlFlowGuard>false</ControlFlowGuard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)Common;$(SolutionDir)KrkrPlugin;$(SolutionDir)Detours;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <PreventDllBinding>false</PreventDllBinding>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention>false</DataExecutionPrevention>
-      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
-      <SupportUnloadOfDelayLoadedDLL>
-      </SupportUnloadOfDelayLoadedDLL>
+      <EnableUAC>false</EnableUAC>
       <WindowsMetadataLinkDelaySign>false</WindowsMetadataLinkDelaySign>
       <LargeAddressAware>false</LargeAddressAware>
       <CETCompat>false</CETCompat>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
+      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
       <SupportNobindOfDelayLoadedDLL>true</SupportNobindOfDelayLoadedDLL>
-      <EnableUAC>false</EnableUAC>
+      <PreventDllBinding>false</PreventDllBinding>
     </Link>
     <Manifest>
       <VerboseOutput>false</VerboseOutput>
@@ -167,7 +164,10 @@
     <ClCompile Include="..\Detours\disasm.cpp" />
     <ClCompile Include="..\Detours\image.cpp" />
     <ClCompile Include="..\Detours\modules.cpp" />
-    <ClCompile Include="CxdecExtractorLoader.cpp" />
+    <ClCompile Include="..\KrkrPlugin\tp_stub.cpp" />
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="HashCore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\directory.h" />
@@ -179,13 +179,10 @@
     <ClInclude Include="..\Common\stringhelper.h" />
     <ClInclude Include="..\Common\util.h" />
     <ClInclude Include="..\Detours\detours.h" />
-    <ClInclude Include="resource.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="CxdecExtractorLoader.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="AmetoYuki_1.ico" />
+    <ClInclude Include="..\KrkrPlugin\tp_stub.h" />
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="ExtendUtils.h" />
+    <ClInclude Include="HashCore.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,31 +5,19 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Detours">
-      <UniqueIdentifier>{1a3862fc-2e9c-40b5-9852-dc494c9ce530}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Common">
-      <UniqueIdentifier>{79160863-3116-4b56-8ddc-4a8907257830}</UniqueIdentifier>
+      <UniqueIdentifier>{31cfe412-f303-4fd8-917a-2f1b7fd82798}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Detours">
+      <UniqueIdentifier>{49ec2efa-ba13-4ca5-9527-c5e8b8e5ea1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="KrkrPlugin">
+      <UniqueIdentifier>{50a1afa9-bab3-4a98-ab88-687f26d688d5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CxdecExtractorLoader.cpp">
+    <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Detours\creatwth.cpp">
-      <Filter>Detours</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Detours\detours.cpp">
-      <Filter>Detours</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Detours\disasm.cpp">
-      <Filter>Detours</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Detours\image.cpp">
-      <Filter>Detours</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Detours\modules.cpp">
-      <Filter>Detours</Filter>
     </ClCompile>
     <ClCompile Include="..\Common\directory.cpp">
       <Filter>Common</Filter>
@@ -55,12 +43,32 @@
     <ClCompile Include="..\Common\util.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="..\Detours\creatwth.cpp">
+      <Filter>Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Detours\detours.cpp">
+      <Filter>Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Detours\disasm.cpp">
+      <Filter>Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Detours\image.cpp">
+      <Filter>Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Detours\modules.cpp">
+      <Filter>Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="..\KrkrPlugin\tp_stub.cpp">
+      <Filter>KrkrPlugin</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HashCore.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Detours\detours.h">
-      <Filter>Detours</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="..\Common\directory.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -85,11 +93,20 @@
     <ClInclude Include="..\Common\util.h">
       <Filter>Common</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="CxdecExtractorLoader.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="AmetoYuki_1.ico" />
+    <ClInclude Include="..\Detours\detours.h">
+      <Filter>Detours</Filter>
+    </ClInclude>
+    <ClInclude Include="..\KrkrPlugin\tp_stub.h">
+      <Filter>KrkrPlugin</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HashCore.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ExtendUtils.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
