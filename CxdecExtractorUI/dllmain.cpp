@@ -28,26 +28,26 @@ INT_PTR CALLBACK ExtractorDialogWindProc(HWND hwnd, UINT msg, WPARAM wParam, LPA
             HDROP hDrop = (HDROP)wParam;
             wchar_t fullName[MaxPath];
             //只获取第一项
-            if (UINT strLen = DragQueryFileW(hDrop, 0, fullName, MaxPath))
+            if (UINT strLen = ::DragQueryFileW(hDrop, 0, fullName, MaxPath))
             {
-                DWORD attr = GetFileAttributesW(fullName);
+                DWORD attr = ::GetFileAttributesW(fullName);
                 if (attr != INVALID_FILE_ATTRIBUTES && (attr & FILE_ATTRIBUTE_ARCHIVE) == FILE_ATTRIBUTE_ARCHIVE)
                 {
-                    const wchar_t* fileName = PathFindFileNameW(fullName);
+                    const wchar_t* fileName = ::PathFindFileNameW(fullName);
                     g_ExtractPackage(fileName);
                 }
-                DragFinish(hDrop);
+                ::DragFinish(hDrop);
             }
             return TRUE;
         }
         case WM_CLOSE:
         {
-            DestroyWindow(hwnd);
+            ::DestroyWindow(hwnd);
             return TRUE;
         }
         case WM_DESTROY:
         {
-            PostQuitMessage(0);
+            ::PostQuitMessage(0);
             return TRUE;
         }
     }
@@ -61,11 +61,11 @@ INT_PTR CALLBACK ExtractorDialogWindProc(HWND hwnd, UINT msg, WPARAM wParam, LPA
 /// <param name="hInstance">模块基地址</param>
 DWORD WINAPI WinExtractorEntry(LPVOID hInstance) 
 {
-    HWND hwnd = CreateDialogParamW((HINSTANCE)hInstance, MAKEINTRESOURCEW(IDD_MainForm), NULL, ExtractorDialogWindProc, 0);
-    ShowWindow(hwnd, SW_NORMAL);
+    HWND hwnd = ::CreateDialogParamW((HINSTANCE)hInstance, MAKEINTRESOURCEW(IDD_MainForm), NULL, ExtractorDialogWindProc, 0);
+    ::ShowWindow(hwnd, SW_NORMAL);
 
-    MSG msg{ 0 };
-    while (BOOL ret = GetMessageW(&msg, NULL, 0, 0))
+    MSG msg{ };
+    while (BOOL ret = ::GetMessageW(&msg, NULL, 0, 0))
     {
         if (ret == -1) 
         {
@@ -73,8 +73,8 @@ DWORD WINAPI WinExtractorEntry(LPVOID hInstance)
         }
         else
         {
-            TranslateMessage(&msg);
-            DispatchMessageW(&msg);
+            ::TranslateMessage(&msg);
+            ::DispatchMessageW(&msg);
         }
     }
     return 0;
@@ -90,21 +90,21 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
             constexpr const wchar_t CoreDllNameW[] = L"CxdecExtractor.dll";
 
             wchar_t moduleFullPath[MaxPath];
-            DWORD strLen = GetModuleFileNameW(hModule, moduleFullPath, MaxPath);
-            wchar_t* dllName = PathFindFileNameW(moduleFullPath);
+            DWORD strLen = ::GetModuleFileNameW(hModule, moduleFullPath, MaxPath);
+            wchar_t* dllName = ::PathFindFileNameW(moduleFullPath);
             memcpy(dllName, CoreDllNameW, sizeof(CoreDllNameW));
 
-            if (HMODULE coreBase = LoadLibraryW(moduleFullPath))
+            if (HMODULE coreBase = ::LoadLibraryW(moduleFullPath))
             {
-                g_ExtractPackage = (tExtractFunc)GetProcAddress(coreBase, "ExtractPackage");
-                if (HANDLE hThread = CreateThread(NULL, 0, WinExtractorEntry, hModule, 0, NULL))
+                g_ExtractPackage = (tExtractFunc)::GetProcAddress(coreBase, "ExtractPackage");
+                if (HANDLE hThread = ::CreateThread(NULL, 0, WinExtractorEntry, hModule, 0, NULL))
                 {
-                    CloseHandle(hThread);
+                    ::CloseHandle(hThread);
                 }
             }
             else
             {
-                MessageBoxW(nullptr, L"CxdecExtractor.dll加载失败", L"错误", MB_OK);
+                ::MessageBoxW(nullptr, L"CxdecExtractor.dll加载失败", L"错误", MB_OK);
             }
             break;
         }
