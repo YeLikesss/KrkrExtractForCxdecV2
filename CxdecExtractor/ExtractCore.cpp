@@ -27,14 +27,15 @@ namespace Engine
 	void ExtractCore::SetLoggerDirectory(const std::wstring& directory)
 	{
 		std::wstring path = Path::Combine(directory, ExtractCore::ExtractorLogFileName);
+
 		File::Delete(path);
 		this->mLogger.Open(path.c_str());
 	}
 
 	void ExtractCore::Initialize(PVOID codeVa, DWORD codeSize)
 	{
-		PVOID createStream = PE::SearchPattern(codeVa, codeSize, ExtractCore::CreateStreamSignature, sizeof(ExtractCore::CreateStreamSignature) - 1);
-		PVOID createIndex = PE::SearchPattern(codeVa, codeSize, ExtractCore::CreateIndexSignature, sizeof(ExtractCore::CreateIndexSignature) - 1);
+		PVOID createStream = PE::SearchPattern(codeVa, codeSize, ExtractCore::CreateStreamSignature, sizeof(ExtractCore::CreateStreamSignature) - 1u);
+		PVOID createIndex = PE::SearchPattern(codeVa, codeSize, ExtractCore::CreateIndexSignature, sizeof(ExtractCore::CreateIndexSignature) - 1u);
 
 		if (createStream && createIndex)
 		{
@@ -52,7 +53,7 @@ namespace Engine
 	{
 		if (!this->IsInitialized())
 		{
-			MessageBoxW(nullptr, L"未初始化CxdecV2接口\n请检查是否为无DRM的Wamsoft Hxv4加密游戏", L"错误", MB_OK);
+			::MessageBoxW(nullptr, L"未初始化CxdecV2接口\n请检查是否为无DRM的Wamsoft Hxv4加密游戏", L"错误", MB_OK);
 			return;
 		}
 
@@ -64,7 +65,7 @@ namespace Engine
 		{
 			Directory::Create(this->mExtractDirectoryPath);     //创建资源提取导出文件夹
 
-			std::wstring packageName = Path::GetFileNameWithoutExtension(packageFileName);				//封包名		
+			std::wstring packageName = Path::GetFileNameWithoutExtension(packageFileName);				//封包名
 			std::wstring extractOutput = Path::Combine(this->mExtractDirectoryPath, packageName);		//输出文件夹
 			std::wstring fileTableOutput = extractOutput + L".alst";									//文件表输出路径
 
@@ -103,12 +104,12 @@ namespace Engine
 					this->mLogger.WriteLine(L"File Not Exist: %s/%s/%s", packageName.c_str(), dirHash.c_str(), fileNameHash.c_str());
 				}
 			}
-			MessageBoxW(nullptr, (packageFileName + L"提取成功").c_str(), L"信息", MB_OK);
+			::MessageBoxW(nullptr, (packageFileName + L"提取成功").c_str(), L"信息", MB_OK);
 			fileTable.Close();
 		}
 		else
 		{
-			MessageBoxW(nullptr, L"请选择正确的XP3封包", L"错误", MB_OK);
+			::MessageBoxW(nullptr, L"请选择正确的XP3封包", L"错误", MB_OK);
 		}
 	}
 
@@ -179,8 +180,8 @@ namespace Engine
 					tTJSVariantClosure& fileInfo = tjsFileInfo.AsObjectClosureNoAddRef();
 
 					//获取文件信息
-					__int64 ordinal = 0;
-					__int64 key = 0;
+					__int64 ordinal = 0i64;
+					__int64 key = 0i64;
 
 					tTJSVariant tjsValue = tTJSVariant();
 					fileInfo.PropGetByNum(TJS_CII_GET, 0, &tjsValue, nullptr);
@@ -191,7 +192,7 @@ namespace Engine
 					key = tjsValue.AsInteger();
 
 					//解析后的文件表
-					FileEntry entry{ 0 };
+					FileEntry entry{ };
 					memcpy(entry.DirectoryPathHash, dirHash->GetData(), dirHash->GetLength());
 					memcpy(entry.FileNameHash, fileNameHash->GetData(), fileNameHash->GetLength());
 
@@ -206,7 +207,7 @@ namespace Engine
 
 	IStream* ExtractCore::CreateStream(const FileEntry& entry, const std::wstring& packageName)
 	{
-		tjs_char fakeName[4]{ 0 };
+		tjs_char fakeName[4]{ };
 		entry.GetFakeName(fakeName);
 
 		tTJSString tjsArcPath = TVPGetAppPath();       //获取游戏路径
@@ -223,7 +224,7 @@ namespace Engine
 		unsigned long long size = StreamUtils::IStreamEx::Length(stream);	//获取流长度
 
 		//相对路径
-		std::wstring relativePath(&extractPath.c_str()[this->mExtractDirectoryPath.length() + 1]);
+		std::wstring relativePath(&extractPath.c_str()[this->mExtractDirectoryPath.length() + 1u]);
 		if (size > 0)
 		{
 			//创建文件夹
@@ -247,7 +248,7 @@ namespace Engine
 				//普通资源
 				buffer.resize(size);
 
-				stream->Seek(LARGE_INTEGER{ 0 }, STREAM_SEEK_SET, NULL);
+				stream->Seek(LARGE_INTEGER{ }, STREAM_SEEK_SET, nullptr);
 				if (StreamUtils::IStreamEx::Read(stream, buffer.data(), size) == size)
 				{
 					success = true;
@@ -270,7 +271,7 @@ namespace Engine
 			{
 				this->mLogger.WriteLine(L"Invaild File: %s", relativePath.c_str());
 			}
-			stream->Seek(LARGE_INTEGER{ 0 }, STREAM_SEEK_SET, NULL);
+			stream->Seek(LARGE_INTEGER{ }, STREAM_SEEK_SET, nullptr);
 		}
 		else
 		{
@@ -281,13 +282,13 @@ namespace Engine
 
 	bool ExtractCore::TryDecryptText(IStream* stream, std::vector<uint8_t>& output)
 	{
-		uint8_t mark[2]{ 0 };
-		StreamUtils::IStreamEx::Read(stream, mark, 2);
+		uint8_t mark[2]{ };
+		StreamUtils::IStreamEx::Read(stream, mark, 2ul);
 
 		if (mark[0] == 0xfe && mark[1] == 0xfe)   //检查加密标记头
 		{
 			uint8_t mode;
-			StreamUtils::IStreamEx::Read(stream, &mode, 1);
+			StreamUtils::IStreamEx::Read(stream, &mode, 1ul);
 
 			if (mode != 0 && mode != 1 && mode != 2)  //识别模式
 			{
@@ -295,7 +296,7 @@ namespace Engine
 			}
 
 			ZeroMemory(mark, sizeof(mark));
-			StreamUtils::IStreamEx::Read(stream, mark, 2);
+			StreamUtils::IStreamEx::Read(stream, mark, 2ul);
 
 			if (mark[0] != 0xff || mark[1] != 0xfe)  //Unicode Bom
 			{
@@ -322,7 +323,7 @@ namespace Engine
 					return false;
 				}
 
-				std::vector<uint8_t> buffer = std::vector<uint8_t>((size_t)uncompressed + 2);
+				std::vector<uint8_t> buffer = std::vector<uint8_t>((size_t)uncompressed + 2u);
 
 				//写入Bom头
 				buffer[0] = mark[0];
@@ -384,7 +385,7 @@ namespace Engine
 
 				size_t sizeToCopy = count * sizeof(wchar_t);
 
-				output.resize(sizeToCopy + 2);
+				output.resize(sizeToCopy + 2u);
 
 				//写入Unicode Bom
 				output[0] = mark[0];

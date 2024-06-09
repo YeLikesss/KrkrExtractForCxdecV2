@@ -25,7 +25,7 @@ namespace Engine
     }
 
     //Hook插件加载
-    auto g_GetProcAddressFunction = GetProcAddress;
+    auto g_GetProcAddressFunction = ::GetProcAddress;
     FARPROC WINAPI HookGetProcAddress(HMODULE hModule, LPCSTR lpProcName)
     {
         FARPROC result = g_GetProcAddressFunction(hModule, lpProcName);
@@ -78,8 +78,6 @@ namespace Engine
     //**********Application***********//
     Application::Application()
     {
-        this->mModuleBase = nullptr;
-
         this->mCurrentDirectoryPath = Path::GetDirectoryName(Util::GetModulePathW(GetModuleHandleW(NULL)));
         this->mTVPExporterInitialized = false;
         this->mExtractor = new ExtractCore();
@@ -99,11 +97,10 @@ namespace Engine
 
     void Application::InitializeModule(HMODULE hModule)
     {
-        this->mModuleBase = hModule;
-        this->mDllDirectoryPath = Path::GetDirectoryName(Util::GetModulePathW(hModule));
+        this->mModuleDirectoryPath = Path::GetDirectoryName(Util::GetModulePathW(hModule));
 
-        //设置Log输出路径
-        this->mExtractor->SetLoggerDirectory(this->mDllDirectoryPath);
+        //设置解包Log输出路径
+        this->mExtractor->SetLoggerDirectory(this->mModuleDirectoryPath);
     }
 
     void Application::InitializeTVPEngine(iTVPFunctionExporter* exporter)
@@ -122,7 +119,7 @@ namespace Engine
         return this->mExtractor;
     }
 
-    //====Static====//
+    //**********====Static====**********//
 
     Application* Application::GetInstance()
     {
@@ -133,6 +130,8 @@ namespace Engine
     {
         g_Instance = new Application();
         g_Instance->InitializeModule(hModule);
+
+        //Hook
         HookUtils::InlineHook::Hook(g_GetProcAddressFunction, HookGetProcAddress);
     }
 
@@ -141,8 +140,8 @@ namespace Engine
         if (g_Instance)
         {
             delete g_Instance;
+            g_Instance = nullptr;
         }
-        g_Instance = nullptr;
     }
 
     //================================//

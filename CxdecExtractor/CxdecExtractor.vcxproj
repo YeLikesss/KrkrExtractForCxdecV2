@@ -49,6 +49,7 @@
     <ManagedAssembly>false</ManagedAssembly>
     <EmbedManifest>false</EmbedManifest>
     <LinkDelaySign>false</LinkDelaySign>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -82,6 +83,8 @@
       <ControlFlowGuard>false</ControlFlowGuard>
       <EnableParallelCodeGeneration>false</EnableParallelCodeGeneration>
       <BuildStlModules>false</BuildStlModules>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -96,7 +99,11 @@
       <CETCompat>false</CETCompat>
       <SupportNobindOfDelayLoadedDLL>true</SupportNobindOfDelayLoadedDLL>
       <WindowsMetadataLinkDelaySign>false</WindowsMetadataLinkDelaySign>
+      <LargeAddressAware>false</LargeAddressAware>
     </Link>
+    <Manifest>
+      <VerboseOutput>false</VerboseOutput>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -129,12 +136,13 @@
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <BuildStlModules>false</BuildStlModules>
       <Optimization>MaxSpeed</Optimization>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <PreventDllBinding>false</PreventDllBinding>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>

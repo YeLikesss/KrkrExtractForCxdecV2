@@ -18,8 +18,8 @@ namespace Engine
 		~Application();
 
 	private:
-		HMODULE mModuleBase;				//dll基础地址
-		std::wstring mDllDirectoryPath;		//dll目录
+
+		std::wstring mModuleDirectoryPath;	//dll目录
 		std::wstring mCurrentDirectoryPath;	//游戏当前目录
 		ExtractCore* mExtractor;			//解包器
 		bool mTVPExporterInitialized;		//插件初始化成功标志

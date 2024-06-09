@@ -36,7 +36,7 @@ namespace Engine
         /// </summary>
         bool IsVaild() const
         {
-            return this->Ordinal >= 0;
+            return this->Ordinal >= 0i64;
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Engine
         {
             wchar_t* fakeName = retValue;
 
-            *(__int64*)fakeName = 0;      //清空8字节
+            *(__int64*)fakeName = 0i64;      //清空8字节
 
             unsigned __int32 ordinalLow32 = this->Ordinal & 0x00000000FFFFFFFFi64;
 
@@ -71,7 +71,7 @@ namespace Engine
                 ++charIndex;
 
                 ordinalLow32 >>= 0x0E;
-            } while (ordinalLow32 != 0);
+            } while (ordinalLow32 != 0u);
         }
     };
 
@@ -83,8 +83,8 @@ namespace Engine
 
 	private:
 		static constexpr const char CreateStreamSignature[] = "\x55\x8B\xEC\x6A\xFF\x68\x2A\x2A\x2A\x2A\x64\xA1\x00\x00\x00\x00\x50\x51\xA1\x2A\x2A\x2A\x2A\x33\xC5\x50\x8D\x45\xF4\x64\xA3\x00\x00\x00\x00\xA1\x2A\x2A\x2A\x2A\x85\xC0\x75\x32\x68\xB0\x30\x00\x00";
-		static constexpr const char CreateIndexSignature[] = "\x55\x8B\xEC\x6A\xFF\x68\x2A\x2A\x2A\x2A\x64\xA1\x00\x00\x00\x00\x50\x83\xEC\x14\x57\xA1\x2A\x2A\x2A\x2A\x33\xC5\x50\x8D\x45\xF4\x64\xA3\x00\x00\x00\x00\x83\x7D\x08\x00\x0F\x84\x2A\x2A\x00\x00\xA1\x2A\x2A\x2A\x2A\x85\xC0\x75\x12\x68\x2A\x2A\x2A\x2A\xE8\x2A\x2A\x2A\x2A\x83\xC4\x04\xA3\x2A\x2A\x2A\x2A\xFF\x75\x0C\x8D\x4D\xF0\x51\xFF\xD0\xA1\x2A\x2A\x2A\x2A\xC7\x45\xFC\x00\x00\x00\x00\x85\xC0";
-        static constexpr const wchar_t Split[] = L"##YSig##";
+        static constexpr const char CreateIndexSignature[] = "\x55\x8B\xEC\x6A\xFF\x68\x2A\x2A\x2A\x2A\x64\xA1\x00\x00\x00\x00\x50\x83\xEC\x14\x57\xA1\x2A\x2A\x2A\x2A\x33\xC5\x50\x8D\x45\xF4\x64\xA3\x00\x00\x00\x00\x83\x7D\x08\x00\x0F\x84\x2A\x2A\x00\x00\xA1\x2A\x2A\x2A\x2A\x85\xC0\x75\x12\x68\x2A\x2A\x2A\x2A\xE8\x2A\x2A\x2A\x2A\x83\xC4\x04\xA3\x2A\x2A\x2A\x2A\xFF\x75\x0C\x8D\x4D\xF0\x51\xFF\xD0\xA1\x2A\x2A\x2A\x2A\xC7\x45\xFC\x00\x00\x00\x00\x85\xC0";
+        static constexpr const wchar_t Split[] = L"##YSig##";           //格式分割字符串
 
 		using tCreateStream = IStream* (__cdecl*)(const tTJSString* fakeName, tjs_int64 key, tjs_uint32 encryptMode);
 		using tCreateIndex = tjs_error (__cdecl*)(tTJSVariant* retValue, const tTJSVariant* tjsXP3Name);
@@ -93,7 +93,7 @@ namespace Engine
 		tCreateIndex mCreateIndexFunc;			//CxCreateIndex获取文件表接口
 
 		std::wstring mExtractDirectoryPath;		//解包输出文件夹
-        Log::Logger mLogger;
+        Log::Logger mLogger;                    //解包日志
 
 	public:
 		ExtractCore();
@@ -112,7 +112,7 @@ namespace Engine
         /// <summary>
         /// 设置日志输出路径
         /// </summary>
-        /// <param name="directory">绝对路径</param>
+        /// <param name="directory">文件夹绝对路径</param>
         void SetLoggerDirectory(const std::wstring& directory);
 
 		/// <summary>

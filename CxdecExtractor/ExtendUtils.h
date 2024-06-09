@@ -59,8 +59,8 @@ namespace Engine
 				pos.QuadPart = (LONGLONG)IStreamEx::Position(stream);
 
 				ULARGE_INTEGER size;
-				stream->Seek(LARGE_INTEGER{ 0 }, STREAM_SEEK_END, &size);
-				stream->Seek(pos, STREAM_SEEK_SET, NULL);
+				stream->Seek(LARGE_INTEGER{ }, STREAM_SEEK_END, &size);
+				stream->Seek(pos, STREAM_SEEK_SET, nullptr);
 
 				return size.QuadPart;
 			}
@@ -71,7 +71,7 @@ namespace Engine
 			static ULONGLONG WINAPI Position(IStream* stream)
 			{
 				ULARGE_INTEGER pos;
-				stream->Seek(LARGE_INTEGER{ 0 }, STREAM_SEEK_CUR, &pos);
+				stream->Seek(LARGE_INTEGER{ }, STREAM_SEEK_CUR, &pos);
 				return pos.QuadPart;
 			}
 			/// <summary>
@@ -84,7 +84,7 @@ namespace Engine
 			{
 				LARGE_INTEGER move{ };
 				move.QuadPart = offset;
-				stream->Seek(move, seekMode, NULL);
+				stream->Seek(move, seekMode, nullptr);
 			}
 			/// <summary>
 			/// 读取流
@@ -94,7 +94,7 @@ namespace Engine
 			/// <param name="length"></param>
 			static ULONG WINAPI Read(IStream* stream, void* buffer, ULONG length)
 			{
-				ULONG readLength = 0;
+				ULONG readLength = 0ul;
 				stream->Read(buffer, length, &readLength);
 				return readLength;
 			}

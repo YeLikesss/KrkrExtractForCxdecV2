@@ -290,7 +290,7 @@ namespace StringHelper
 		return output;
 	}
 
-	std::wstring StringHelper::BytesToHexStringW(unsigned __int8* data, unsigned __int32 length)
+	std::wstring StringHelper::BytesToHexStringW(const unsigned __int8* data, unsigned __int32 length)
 	{
 		constexpr const wchar_t hexStringW[32] = L"0123456789ABCDEF";
 

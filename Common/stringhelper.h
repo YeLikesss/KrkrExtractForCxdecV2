@@ -26,5 +26,5 @@ namespace StringHelper
 	std::wstring Format(const wchar_t* format, ...);
 	std::wstring VFormat(const wchar_t* format, va_list ap);
 
-	std::wstring BytesToHexStringW(unsigned __int8* data, unsigned __int32 length);
+	std::wstring BytesToHexStringW(const unsigned __int8* data, unsigned __int32 length);
 }
