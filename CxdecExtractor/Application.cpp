@@ -78,7 +78,7 @@ namespace Engine
     //**********Application***********//
     Application::Application()
     {
-        this->mCurrentDirectoryPath = Path::GetDirectoryName(Util::GetModulePathW(GetModuleHandleW(NULL)));
+        this->mCurrentDirectoryPath = Path::GetDirectoryName(Util::GetModulePathW(::GetModuleHandleW(NULL)));
         this->mTVPExporterInitialized = false;
         this->mExtractor = new ExtractCore();
 
